@@ -16,7 +16,7 @@ const serviceAccount = require("./serviceAccountKey.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://domaincord-points.firebaseio.com"
+  databaseURL: "https://domaincord-market.firebaseio.com"
 });
 
 const db = admin.firestore();
@@ -60,7 +60,7 @@ client.on('message', msg => {
         .replace('/', '')
 
       if (command === 'points') {
-        let theMember = msg.mentions ? msg.mentions.members.first() : msg.member 
+        let theMember = msg.mentions.array().length > 0 ? msg.mentions.members.first() : msg.member 
         let memberRef = db.collection('users').doc(theMember.id);
         let getDoc = memberRef.get()
           .then(doc => {
