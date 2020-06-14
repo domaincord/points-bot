@@ -22,12 +22,8 @@ admin.initializeApp({
 const db = admin.firestore();
 
 const hasPositiveThanks = msg => {
-  const thankPattern = /(^|[^a-z]+)(thanks?|thx|ty|thankyou)($|[^a-z]+)/g
-  if ( thankPattern.test(msg.content.toLowerCase()) ) {
-    return true
-  } else {
-    return false
-  }
+  const thankPattern = /(^|[^a-z]+)(thanks?|thx|ty|thankyou|thnx|thnks|htank|thansk)($|[^a-z]+)/g
+  return thankPattern.test(msg.content.toLowerCase())
 }
 
 const incrementUserPointsTotal = (member, points = MIN_POINTS_PER_MESSAGE_SENT ) => {
