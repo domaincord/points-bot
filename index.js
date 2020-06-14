@@ -22,17 +22,8 @@ admin.initializeApp({
 const db = admin.firestore();
 
 const hasPositiveThanks = msg => {
-  const thankPattern = /[^a-z](thanks?|thx|ty|thankyou)[^a-z]/g
-  const messageWords = msg.content.toLowerCase().split(' ')
-  if ( msg.content.toLowerCase().match(thankPattern) ) {
-    return true
-  } else if ( /(thanks?|thx|ty|thankyou)[^a-z]+/.test(messageWords[0]) ) {
-    return true
-  } else if ( /[^a-z]+(thanks?|thx|ty|thankyou)/.test( messageWords[messageWords.length - 1] ) ) {
-    return true
-  } else if ( /(thanks?|thx|ty|thankyou)/.test( messageWords[0] ) ) {
-    return true
-  } else if ( /(thanks?|thx|ty|thankyou)/.test( messageWords[messageWords.length - 1] ) ) {
+  const thankPattern = /(^|[^a-z]+)(thanks?|thx|ty|thankyou)($|[^a-z]+)/g
+  if ( thankPattern.test(msg.content.toLowerCase()) ) {
     return true
   } else {
     return false
@@ -161,10 +152,9 @@ client.on('message', msg => {
     console.log('thanks logged')
     if (msg.mentions.members.array().length >= 1) {
       msg.mentions.members.map(member => {
-          if (!member.bot) {
-            return msg.reply('You cannot thank a bot.')
-          }
-          if (member.id !== msg.member.id) {
+          if (member.user.bot) {
+            msg.reply('You cannot thank a bot.')
+          } else if (member.id !== msg.member.id) {
              incrementUserPointsTotal(member, POINTS_PER_REP_RECEIVED)
              db.collection('/points').add({
                 messageId: msg.id,
