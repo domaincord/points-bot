@@ -4,7 +4,7 @@
   "dependencies": {
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
-    "firebase-admin": "^8.12.1"
+    "firebase-admin": "^11.4.1"
   },
   "scripts": {
     "start": "node index.js",
